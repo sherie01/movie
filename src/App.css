@@ -1,0 +1,213 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #3f4b58;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  padding: 0 15px;
+  overflow-x: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center; 
+  border-radius: 10px;
+  background: #bec3c9ae;
+  padding: 0.5rem;
+  margin-top: 1rem;
+}
+
+.logo {
+  width: 60px; 
+  height: 30px; 
+  margin-right: 10px; 
+}
+
+/* Search form styles */
+.search-form {
+  display: flex;
+  height: 30px;
+  width: 100%;
+  max-width: 350px;
+  color: rgb(11, 11, 11);
+}
+
+.search-input::placeholder {
+  font-size: small;
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 40px;
+  background: #fffffffd;
+  color: #000000;
+  font-size: 1rem;
+}
+
+.Nav {
+  display: flex; 
+  gap: 30px; 
+  margin-left: auto; 
+}
+
+.nav-toggle {
+  display: none; 
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Content area styles */
+.movies-area {
+  padding: 5px;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  padding: 20px;
+}
+
+.error-message, .loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #000000;
+}
+
+.loading {
+  color: #f1f1f1;
+}
+
+.poster-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.movie-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movie-info {
+  padding: 1rem;
+}
+
+.movie-info h3 {
+  font-size: 1rem;
+}
+
+.movie-meta {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.rating {
+  color: white;
+  display: flex;
+  gap: 4px;
+}
+
+.year {
+  padding: 2px 6px;
+  background: rgba(37, 99, 235, 0.2);
+  border-radius: 4px;
+}
+
+
+.movie-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+  border-radius: 10px;
+  cursor: pointer;
+  transform: scale(1.05); 
+  box-shadow: 0 2px 5px rgb(176, 175, 175); 
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: block; 
+  }
+
+  .Nav {
+    display: none; 
+    flex-direction: column; 
+    position: absolute;
+    top: 60px; 
+    right: 15px;
+    background: #bec3c9ae;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .Nav.active {
+    display: flex; 
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .poster-container {
+    height: 250px;
+  }
+
+  .search-form {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .search-form {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .search-input {
+    margin-bottom: 0.5rem;
+  }
+
+  .poster-container {
+    height: 200px;
+  }
+
+  .movie-info h3 {
+    font-size: 1rem;
+  }
+
+  .movie-meta {
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .nav-toggle {
+    display: none; 
+  }
+
+  .Nav {
+    display: flex; 
+    flex-direction: row; 
+  }
+}
