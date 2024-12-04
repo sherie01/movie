@@ -9,13 +9,12 @@ const Modal = ({ movie, onClose }) => {
       <div className="modal-content">
         <span className="close-button" onClick={onClose}>&times;</span>
         <h2>{movie.Title}</h2>
-        <img src={movie.Poster} alt={movie.Title} className="movie-poster" />
-        <p className="release-date"><strong>Release Date:</strong> {movie.Released}</p>
-        <p className="genre"><strong>Genre:</strong> {movie.Genre}</p>
-        <p className="plot"><strong>Plot:</strong> {movie.Plot}</p>
-        <div className="movie-meta">
-        <p className="rating"><strong>Ratings:</strong> ⭐{movie.imdbRating}</p>
-        </div>
+        <img src={movie.Poster} alt={movie.Title} className="movie-modal" />
+        <p className="director"> Directed by {movie.Director}</p>
+        <p className="release-date"> {movie.Released}, {movie.Runtime}</p>
+        <p className="genre"> {movie.Genre}</p>
+        <p className="rating"> 🍿{movie.imdbRating}</p>
+        <p className="plot"> {movie.Plot}</p>
       </div>
     </div>
   );

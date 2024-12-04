@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
-import Card from "./Card";
+import MovieSection from "./MovieSection";
 import Modal from "./Modal";
 
 //API
@@ -15,6 +15,14 @@ const App = () => {
   const [selectedMovie, setSelectedMovie] = useState(null); 
   const [isNavOpen, setIsNavOpen] = useState(false); 
 
+  useEffect(() => {
+    const delayedSearch = setTimeout(() => {
+      fetchMovies(searchTerm);
+    }, 500);
+
+    return () => clearTimeout(delayedSearch);
+  }, [searchTerm]);
+
   const fetchMovies = async (search = '') => {
     setIsLoading(true);
     const url = search 
@@ -24,7 +32,7 @@ const App = () => {
     try {
       const responses = await Promise.all([
         fetch(url + '&page=1'),
-        fetch(url + '&page=2') // Fetching the second page
+        fetch(url + '&page=2')
       ]);
 
       const data = await Promise.all(responses.map(res => res.json()));
@@ -55,15 +63,6 @@ const App = () => {
       .catch(error => console.error("Error fetching movie details:", error));
   };
 
-  useEffect(() => {
-    fetchMovies();
-  }, []);
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    fetchMovies(searchTerm);
-  };
-
   const handleCardClick = (id) => {
     fetchMovieDetails(id);
   };
@@ -80,7 +79,7 @@ const App = () => {
     <div className="container">
       <header className="header">
         <img src="plex.png" alt="Logo" className="logo" />
-        <form className="search-form" onSubmit={handleSearch}>
+        <form className="search-form">
           <input 
             type="text" 
             placeholder="Find Movies & TV" 
@@ -90,24 +89,30 @@ const App = () => {
           />
         </form>
         <div className="nav-toggle" onClick={toggleNav}>
-          &#9776; {/* Hamburger icon */}
+        {isNavOpen ? '✕' : '☰'} {/* Burjer */}
         </div>
         <nav className={`Nav ${isNavOpen ? 'active' : ''}`}>
-          <span>Live</span>
+          <span>Free Movies & TV</span>
+          <span>Live TV</span>
           <span>Features</span>
           <span>Download</span>
+          <div className="divider"></div>
+          <div className="login">
+            <p>Sign In</p>
+            <button>Sign Up Free</button>
+          </div>
         </nav>
       </header>
 
-      <main className="movies-area">
+      <main className="movies-section">
         {searchError ? (
-          <p className="error-message">No movies found. Try another search.</p>
+          <p className="message">No results</p>
         ) : isLoading ? (
-          <p className="loading">Loading movies...</p>
+          <p className="loading">Loading.....</p>
         ) : (
           <div className="movie-grid">
             {movieData.map((movie, index) => (
-              <Card info={movie} key={index} onCardClick={handleCardClick} />
+              <MovieSection info={movie} key={index} onCardClick={handleCardClick} />
             ))}
           </div>
         )}
