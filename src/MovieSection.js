@@ -1,6 +1,4 @@
-import React from "react";
-
-const MovieSection = ({ info, onCardClick }) => {
+const MovieSection = ({ info, rating, onCardClick }) => {
   return (
     <div className="movie-container" onClick={() => onCardClick(info.imdbID)}>
       <div className="poster">
@@ -14,12 +12,12 @@ const MovieSection = ({ info, onCardClick }) => {
         <h3>{info.Title}</h3>
         <div className="movie-meta">
           <span className="year">
-            {info.Year || 'Year not available'}
+            {info.Year || 'Year not available'} {rating && `| 🍿${rating}`}
           </span>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default MovieSection;

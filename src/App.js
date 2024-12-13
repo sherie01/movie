@@ -28,23 +28,32 @@ const App = () => {
     const url = search 
       ? `${base_url}?s=${search}&apikey=${API_key}`
       : `${base_url}?s=movie&apikey=${API_key}`; 
-
+  
     try {
       const responses = await Promise.all([
         fetch(url + '&page=1'),
         fetch(url + '&page=2')
       ]);
-
+  
       const data = await Promise.all(responses.map(res => res.json()));
-      
       const allMovies = data.flatMap(d => d.Response === "True" ? d.Search : []);
-      
+  
       if (allMovies.length === 0) {
         setSearchError(true);
         setData([]);
       } else {
         setSearchError(false);
-        setData(allMovies.slice(0, 18));
+  
+        // Fetch ratings for each movie
+        const moviesWithRatings = await Promise.all(
+          allMovies.slice(0, 18).map(async (movie) => {
+            const response = await fetch(`${base_url}?i=${movie.imdbID}&apikey=${API_key}`);
+            const details = await response.json();
+            return { ...movie, Rating: details.imdbRating || 'N/A' };
+          })
+        );
+  
+        setData(moviesWithRatings);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -53,6 +62,7 @@ const App = () => {
       setIsLoading(false);
     }
   };
+  
 
   const fetchMovieDetails = (id) => {
     fetch(`${base_url}?i=${id}&apikey=${API_key}`)
@@ -105,18 +115,24 @@ const App = () => {
       </header>
 
       <main className="movies-section">
-        {searchError ? (
-          <p className="message">No results</p>
-        ) : isLoading ? (
-          <p className="loading">Loading.....</p>
-        ) : (
-          <div className="movie-grid">
-            {movieData.map((movie, index) => (
-              <MovieSection info={movie} key={index} onCardClick={handleCardClick} />
-            ))}
-          </div>
-        )}
-      </main>
+  {searchError ? (
+    <p className="message">No results</p>
+  ) : isLoading ? (
+    <p className="loading">Loading.....</p>
+  ) : (
+    <div className="movie-grid">
+      {movieData.map((movie, index) => (
+        <MovieSection 
+          info={movie} 
+          key={index} 
+          rating={movie.Rating} 
+          onCardClick={handleCardClick} 
+        />
+      ))}
+    </div>
+  )}
+</main>
+
     
       <Modal movie={selectedMovie} onClose={closeModal} />
     </div>
